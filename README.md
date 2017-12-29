@@ -10,7 +10,7 @@ Pytorch implementation for Classification, Semantic Segmentation and Object Dete
 
 ## Training
 1. Modify the `.yml` file in `./cfg/cls/air101-1x64d`
-2. ```Shell
+2. ```
    python train_cls.py --cfg ./cfg/cls/air101-1x64d/air50_1x64d_imagenet.yml 
    ```
 
