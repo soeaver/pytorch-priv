@@ -1,8 +1,8 @@
 from __future__ import division
 
 """
-VGGNet
-Copyright (c) Yang Lu, 2017
+import from:
+https://github.com/pytorch/vision/blob/master/torchvision/models/vgg.py
 """
 
 import torch.nn as nn
