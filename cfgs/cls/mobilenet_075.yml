@@ -8,7 +8,7 @@ CLS:
   data_root: '/home/user/Database/ILSVRC2017/Data/CLS-LOC/'
   train_folder: 'train'
   val_folder: 'val'
-  epochs: 50
+  epochs: 100
   train_batch: 256
   test_batch: 200
   base_lr: 0.001
@@ -19,10 +19,10 @@ CLS:
   num_classes: 1000
   base_size: 256
   crop_size: 224
-  ckpt: 'ckpts/imagenet/mobilenet_075_RMSProp/'
+  ckpt: 'ckpts/imagenet/mobilenet_075/'
   resume: ''
   start_epoch: 0
-  pretrained: 'ckpts/imagenet/mobilenet_075/model_best.pth.tar'
+  pretrained: ''
   cosine_lr: True
   validate: True
   evaluate: False
