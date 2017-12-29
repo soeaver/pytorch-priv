@@ -1,8 +1,9 @@
 # pytorch-priv
 Pytorch implementation for Classification, Semantic Segmentation, Pose Estimation and Object Detection
 - [x] **Image Classification**
-- [x] **Semantic Segmentation** (progressing...)
-- [x] **Pose Estimation** (progressing...)
+- [ ] **Semantic Segmentation** (progressing...)
+- [ ] **Object Detection** (progressing...)
+- [ ] **Pose Estimation** (progressing...)
 
 ## Install
 * Install [PyTorch>=0.3.0](http://pytorch.org/)
