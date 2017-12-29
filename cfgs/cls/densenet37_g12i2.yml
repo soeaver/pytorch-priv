@@ -8,7 +8,7 @@ CLS:
   data_root: '/home/user/Database/ILSVRC2017/Data/CLS-LOC/'
   train_folder: 'train'
   val_folder: 'val'
-  epochs: 120
+  epochs: 100
   train_batch: 256
   test_batch: 200
   base_lr: 0.1
@@ -25,8 +25,8 @@ CLS:
   grayscale: 0
   disp_iter: 20
   ckpt: 'ckpts/imagenet/densenet37_g12i2/'
-  resume: 'ckpts/imagenet/densenet37_g12i2/model_latest.pth.tar'
-  start_epoch: 110
+  resume: ''
+  start_epoch: 0
   pretrained: ''
   cosine_lr: True
   validate: True
