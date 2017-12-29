@@ -2,9 +2,7 @@
 Pytorch implementation for Classification, Semantic Segmentation and Object Detection
 
 ## Install
-* Requirement
-
-  pytorch 0.3.0
+* Requirement: pytorch 0.3.0.
 * Install [PyTorch](http://pytorch.org/)
 * Clone recursively
   ```
