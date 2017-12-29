@@ -11,15 +11,20 @@ Pytorch implementation for Classification, Semantic Segmentation and Object Dete
 
 
 ## Training and Evaluating
-For training:
-1. Modify the `.yml` file in `./cfg/cls/air50-1x64d`
+**For training:**
+1. Modify the `.yml` file in `./cfg/cls/air50-1x64d`: (some important params)
+   * the `ckpt` path is for saving the checkpoints
+   * if you want use cosine learning rate, please set `cosine_lr: True`, the `lr_schedule` and `gamma` will not be used
+   * for resuming training, add the `model.pth.tar` to `resume: ` and modify `start_epoch`
 2. Train a network:
      ```
      python train_cls.py --cfg ./cfg/cls/air101-1x64d/air50_1x64d_imagenet.yml 
      ```
 
-For evaluating:
-1. Modify the `.yml` file in `./cfg/cls/air50-1x64d`, add the `model.pth.tar` to `pretrained` and set the `evaluate: True`
+**For evaluating:**
+1. Modify the `.yml` file in `./cfg/cls/air50-1x64d`:
+   * add the `model.pth.tar` to `pretrained: `
+   * set the `evaluate: True`
 2. Evaluate a network:
      ```
      python train_cls.py --cfg ./cfg/cls/air101-1x64d/air50_1x64d_imagenet.yml 
