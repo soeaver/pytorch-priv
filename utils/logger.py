@@ -1,5 +1,5 @@
 # A simple torch style logger
-# (C) Wei YANG 2017
+# import from https://github.com/bearpaw/pytorch-classification  (C) Wei YANG 2017
 from __future__ import absolute_import
 import matplotlib.pyplot as plt
 import os
