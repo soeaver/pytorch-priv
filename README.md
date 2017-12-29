@@ -6,7 +6,7 @@ Pytorch implementation for Classification, Semantic Segmentation and Object Dete
 * Clone recursively
   ```
   git clone --recursive https://github.com/soeaver/pytorch-priv
-
+  ```
 
 ## Training
 1. Modify the `.yml` file in `./cfg/cls/air101-1x64d`
