@@ -2,17 +2,17 @@
 Pytorch implementation for Classification, Semantic Segmentation and Object Detection
 
 ## Install
-* Requirement: pytorch 0.3.0.
-* Install [PyTorch](http://pytorch.org/)
+* Install [PyTorch>=0.3.0](http://pytorch.org/)
 * Clone recursively
   ```
   git clone --recursive https://github.com/soeaver/pytorch-priv
-  ```
-
 
 
 ## Training
-Please see the [Training recipes](TRAINING.md) for how to train the models.
+1. Modify the `.yml` file in `./cfg/cls/air101-1x64d`
+2. ```Shell
+   python train_cls.py --cfg ./cfg/cls/air101-1x64d/air50_1x64d_imagenet.yml 
+   ```
 
 
 ## Results
