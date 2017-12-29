@@ -11,6 +11,7 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
   ```
   git clone --recursive https://github.com/soeaver/pytorch-priv
   ```
+* pip install easydict
 
 
 ## Training and Evaluating
