@@ -11,15 +11,23 @@ Pytorch implementation for Classification, Semantic Segmentation and Object Dete
 
 
 ## Training and Evaluating
+For training:
 1. Modify the `.yml` file in `./cfg/cls/air50-1x64d`
 2. Train a network:
      ```
      python train_cls.py --cfg ./cfg/cls/air101-1x64d/air50_1x64d_imagenet.yml 
      ```
-     
-     
+
+For evaluating:
+1. Modify the `.yml` file in `./cfg/cls/air50-1x64d`, add the `model.pth.tar` to `pretrained` and set the `evaluate: True`
+2. Evaluate a network:
+     ```
+     python train_cls.py --cfg ./cfg/cls/air101-1x64d/air50_1x64d_imagenet.yml 
+     ```
+
+
 ## Features
-- [x] [Aligned Inception ResNet](https://arxiv.org/abs/1703.06211)
+- [x] [Aligned Inception ResNet (AIR)](https://arxiv.org/abs/1703.06211)
 - [x] [Cosine Learning Rate](https://arxiv.org/pdf/1707.06990.pdf) 
 - [x] [Mixup](https://arxiv.org/pdf/1710.09412.pdf) (progressing...)
 
