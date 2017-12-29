@@ -56,5 +56,10 @@ Single-crop (224x224) validation error rate is reported.
 </div> 
 
 
+## License
+
+pytorch-priv is released under the MIT License (refer to the LICENSE file for details).
+
+
 ## Contribute
 Feel free to create a pull request if you find any bugs or you want to contribute (e.g., more datasets and more network structures).
