@@ -1,0 +1,29 @@
+workers: 16
+pixel_mean: [0.485, 0.456, 0.406]
+pixel_std: [0.229, 0.224, 0.225]
+gpu_ids: '0,1,2,3,4,5,6,7'
+
+CLS:
+  arch: 'mobilenet_075'
+  data_root: '/home/user/Database/ILSVRC2017/Data/CLS-LOC/'
+  train_folder: 'train'
+  val_folder: 'val'
+  epochs: 100
+  train_batch: 256
+  test_batch: 200
+  base_lr: 0.1
+  lr_schedule: [30, 60]
+  gamma: 0.1
+  momentum: 0.9
+  weight_decay: 0.0001
+  num_classes: 1000
+  base_size: 256
+  crop_size: 224
+  ckpt: 'ckpts/imagenet/mobilenet_075'
+  resume: ''
+  start_epoch: 0
+  pretrained: ''
+  cosine_lr: True
+  validate: True
+  evaluate: False
+  mixup: False
