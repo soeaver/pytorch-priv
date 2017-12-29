@@ -23,6 +23,7 @@ CLS:
   rotation: []
   pixel_jitter: []
   grayscale: 0
+  disp_iter: 20
   ckpt: 'ckpts/imagenet/air50_1x64d'
   resume: ''
   start_epoch: 0
