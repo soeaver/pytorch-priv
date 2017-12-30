@@ -7,6 +7,7 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
 
 ## Install
 * Install [PyTorch>=0.3.0](http://pytorch.org/)
+* Install [torchvision>=0.2.0](http://pytorch.org/)
 * Clone recursively
   ```
   git clone --recursive https://github.com/soeaver/pytorch-priv
