@@ -17,14 +17,17 @@ __all__ = ['mobilenet', 'mobilenet_2', 'mobilenet_1', 'mobilenet_075', 'mobilene
 
 
 class DepthWiseBlock(nn.Module):
-    def __init__(self, inplanes, planes, stride=1):
+    def __init__(self, inplanes, planes, stride=1, prelu=False):
         super(DepthWiseBlock, self).__init__()
         inplanes, planes = int(inplanes), int(planes)
         self.conv_dw = nn.Conv2d(inplanes, inplanes, kernel_size=3, padding=1, stride=stride, groups=inplanes, bias=False)
         self.bn_dw = nn.BatchNorm2d(inplanes)
         self.conv_sep = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, padding=0, bias=False)
         self.bn_sep = nn.BatchNorm2d(planes)
-        self.relu = nn.ReLU(inplace=True)
+        if prelu:
+            self.relu = nn.PReLU()
+        else:
+            self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x):
         out = self.conv_dw(x)
@@ -56,23 +59,23 @@ class MobileNet(nn.Module):
         else:
             self.relu = nn.ReLU(inplace=True)
 
-        self.dw2_1 = block(32 * widen_factor, 64 * widen_factor)
-        self.dw2_2 = block(64 * widen_factor, 128 * widen_factor, stride=2)
+        self.dw2_1 = block(32 * widen_factor, 64 * widen_factor, prelu=prelu)
+        self.dw2_2 = block(64 * widen_factor, 128 * widen_factor, stride=2, prelu=prelu)
 
-        self.dw3_1 = block(128 * widen_factor, 128 * widen_factor)
-        self.dw3_2 = block(128 * widen_factor, 256 * widen_factor, stride=2)
+        self.dw3_1 = block(128 * widen_factor, 128 * widen_factor, prelu=prelu)
+        self.dw3_2 = block(128 * widen_factor, 256 * widen_factor, stride=2, prelu=prelu)
 
-        self.dw4_1 = block(256 * widen_factor, 256 * widen_factor)
-        self.dw4_2 = block(256 * widen_factor, 512 * widen_factor, stride=2)
+        self.dw4_1 = block(256 * widen_factor, 256 * widen_factor, prelu=prelu)
+        self.dw4_2 = block(256 * widen_factor, 512 * widen_factor, stride=2, prelu=prelu)
 
-        self.dw5_1 = block(512 * widen_factor, 512 * widen_factor)
-        self.dw5_2 = block(512 * widen_factor, 512 * widen_factor)
-        self.dw5_3 = block(512 * widen_factor, 512 * widen_factor)
-        self.dw5_4 = block(512 * widen_factor, 512 * widen_factor)
-        self.dw5_5 = block(512 * widen_factor, 512 * widen_factor)
-        self.dw5_6 = block(512 * widen_factor, 1024 * widen_factor, stride=2)
+        self.dw5_1 = block(512 * widen_factor, 512 * widen_factor, prelu=prelu)
+        self.dw5_2 = block(512 * widen_factor, 512 * widen_factor, prelu=prelu)
+        self.dw5_3 = block(512 * widen_factor, 512 * widen_factor, prelu=prelu)
+        self.dw5_4 = block(512 * widen_factor, 512 * widen_factor, prelu=prelu)
+        self.dw5_5 = block(512 * widen_factor, 512 * widen_factor, prelu=prelu)
+        self.dw5_6 = block(512 * widen_factor, 1024 * widen_factor, stride=2, prelu=prelu)
 
-        self.dw6 = block(1024 * widen_factor, 1024 * widen_factor)
+        self.dw6 = block(1024 * widen_factor, 1024 * widen_factor, prelu=prelu)
 
         self.avgpool = nn.AdaptiveAvgPool2d(1)  
         self.fc = nn.Linear(int(1024 * widen_factor), num_classes)
