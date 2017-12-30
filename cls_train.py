@@ -208,7 +208,7 @@ def adjust_learning_rate(optimizer, epoch, batch=0, batch_per_epoch=5000):
             else:
                 param_group['lr'] = LR_STATE
     else:
-        if epoch in cfg.CLS.schedule and batch == 0:
+        if epoch in cfg.CLS.lr_schedule and batch == 0:
             LR_STATE *= cfg.CLS.gamma
             for param_group in optimizer.param_groups:
                 cur_lr = param_group['lr']
