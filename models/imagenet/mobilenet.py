@@ -12,7 +12,8 @@ import torch.nn.functional as F
 from torch.nn import init
 import torch
 
-__all__ = ['mobilenet', 'mobilenet_2', 'mobilenet_1', 'mobilenet_075', 'mobilenet_05', 'mobilenet_025']
+__all__ = ['mobilenet', 'mobilenet_2', 'mobilenet_1', 'mobilenet_075', 'mobilenet_05', 'mobilenet_025',
+          'mobilenet_1prelu']
 
 
 class DepthWiseBlock(nn.Module):
@@ -38,7 +39,7 @@ class DepthWiseBlock(nn.Module):
 
 
 class MobileNet(nn.Module):
-    def __init__(self, widen_factor=1.0, num_classes=1000):
+    def __init__(self, widen_factor=1.0, num_classes=1000, prelu=False):
         """ Constructor
         Args:
             widen_factor: config of widen_factor
@@ -50,7 +51,10 @@ class MobileNet(nn.Module):
 
         self.conv1 = nn.Conv2d(3, int(32 * widen_factor), kernel_size=3, stride=2, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(int(32 * widen_factor))
-        self.relu = nn.ReLU(inplace=True)
+        if prelu:
+            self.relu = nn.PReLU()
+        else:
+            self.relu = nn.ReLU(inplace=True)
 
         self.dw2_1 = block(32 * widen_factor, 64 * widen_factor)
         self.dw2_2 = block(64 * widen_factor, 128 * widen_factor, stride=2)
@@ -152,4 +156,11 @@ def mobilenet_025():
     Construct MobileNet.
     """
     model = MobileNet(widen_factor=0.25, num_classes=1000)
+    return model
+
+def mobilenet_1prelu():
+    """
+    Construct MobileNet.
+    """
+    model = MobileNet(widen_factor=1.0, num_classes=1000, prelu=True)
     return model
