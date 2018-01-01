@@ -41,10 +41,10 @@ parser.add_argument('--data_root', type=str, default='/home/user/Database/ILSVRC
 parser.add_argument('--val_file', type=str, default='/home/user/Program/caffe-model/cls/ILSVRC2012_val_norm.txt',
                     help='val_file')
 parser.add_argument('--arch', type=str,
-                    default='resnet50',
+                    default='air50_1x64d',
                     help='model arch')
 parser.add_argument('--model_weights', type=str,
-                    default='./pytorch-model/resnet50-19c8e357.pth',
+                    default='./pytorch-model/air50-1x64d.pth.tar',
                     help='model weights')
 
 parser.add_argument('--ground_truth', type=bool, default=True, help='whether provide gt labels')
@@ -60,12 +60,12 @@ parser.add_argument('--save_score_vec', type=bool, default=False, help='whether 
 
 args = parser.parse_args()
 
-# ------------------ MEAN ---------------------
+# ------------------ MEAN & STD ---------------------
 PIXEL_MEANS = np.array([0.485, 0.456, 0.406])  
-# ------------------ STD ---------------------
 PIXEL_STDS = np.array([0.229, 0.224, 0.225]) 
-# ---------------------------------------
+# ---------------------------------------------------
 
+# Set GPU id, CUDA and cudnn
 os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_id
 USE_CUDA = torch.cuda.is_available()
 cudnn.benchmark = True
@@ -79,7 +79,6 @@ except:
     weight_dict = checkpoint
 model_dict = MODEL.state_dict()
 updated_dict, match_layers, mismatch_layers = weight_filler(weight_dict, model_dict)
-# print(match_layers)
 model_dict.update(updated_dict)
 MODEL.load_state_dict(model_dict)
 
@@ -107,7 +106,6 @@ f.close()
 
 def eval_batch():
     eval_len = len(SET_DICT)
-    # eval_len = 1000
     accuracy = np.zeros(len(args.top_k))
     start_time = datetime.datetime.now()
 
