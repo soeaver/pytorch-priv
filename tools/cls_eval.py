@@ -87,7 +87,7 @@ MODEL.cuda().eval()
 print(MODEL)
 
 # Create log & dict
-LOG_PTH = './log{}.txt'.format(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
+LOG_PTH = './data/log{}.txt'.format(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
 SET_DICT = dict()
 f = open(args.val_file, 'r')
 img_order = 0
