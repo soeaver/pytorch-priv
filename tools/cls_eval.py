@@ -175,7 +175,7 @@ def eval_batch():
         w = open(LOG_PTH.replace('.txt', 'scorevec.txt'), 'w')
         for i in xrange(eval_len - args.skip_num):
             w.write(SET_DICT[i + args.skip_num]['score_vec'])
-    w.close()
+        w.close()
     print('DONE!')
 
 
