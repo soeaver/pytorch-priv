@@ -17,7 +17,7 @@ import torch
 __all__ = ['resnet', 'resnet10', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152',
            'resnet10_1x32d_c79077', 'resnet18_1x32d_c79077', 'resnet18_1x32d_c8631', 'resnet10_1x48d',
            'resnet18_1x48d', 'resnet10_1x32d', 'resnet18_1x32d', 'resnet10_1x16d', 'resnet18_1x16d',
-           'resnet10_1x96d', 'resnet18_1x96d', 'resnet18_1x128d', 'resnet50_place365']
+           'resnet10_1x96d', 'resnet18_1x96d', 'resnet18_1x128d', 'resnet50_place365', 'resnet50_1x64d']
 
 
 def conv3x3(in_planes, out_planes, stride=1):
@@ -303,4 +303,9 @@ def resnet50_place365():
     model.bn2 = nn.BatchNorm2d(64)
     model.conv3 = conv3x3(64, 64)
     model.bn3 = nn.BatchNorm2d(64)
+    return model
+
+
+def resnet50_1x64d():
+    model = ResNet(bottleneck=True, baseWidth=64, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
     return model
