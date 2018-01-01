@@ -86,6 +86,7 @@ MODEL.load_state_dict(model_dict)
 MODEL.cuda().eval()
 print(MODEL)
 
+# Create log & dict
 LOG_PTH = './log{}.txt'.format(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
 SET_DICT = dict()
 f = open(args.val_file, 'r')
