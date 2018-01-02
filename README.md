@@ -50,10 +50,12 @@ Single-crop (224x224) validation error rate is reported.
 
 | Model                       | Flops (M) | Params (M) | Top-1 Error (%) | Top-5 Error (%)  |
 | :-------------------------: | --------- |----------- | --------------- | ---------------- |
-| AIR50-1x64d                 | 6148.2    | 35.9       | 21.14           | 5.57            |
+| air50-1x64d                 | 6148.2    | 35.9       | 21.02           | 5.55             |
+| air101-1x64d                | 11722.9   | 64.4       | 20.13           | 5.02             |
 
 <div align='center'>
   <img src='data/images/air50_1x64d_curve.png' height='330px'>
+  <img src='data/images/air101_1x64d_curve.png' height='330px'>
 </div> 
 
 
