@@ -15,6 +15,7 @@ import torchvision.models as models
 import torch.backends.cudnn as cudnn
 
 import models.imagenet as customized_models
+from PIL import Image
 from utils import weight_filler
 from utils import transforms as T
 
@@ -112,16 +113,16 @@ def eval_batch():
 
     for i in xrange(eval_len - args.skip_num):
         im = cv2.imread(SET_DICT[i + args.skip_num]['path'])
-        im = T.bgr2rgb(im) / 255.0
-        normalized_im = T.normalize(im, mean=PIXEL_MEANS, std=PIXEL_STDS)
-        scale_im, _ = T.scale(normalized_im, short_size=args.base_size)
+        im = T.bgr2rgb(im)
+        scale_im = T.pil_resize(Image.fromarray(im), args.base_size)
+        normalized_im = T.normalize(np.asarray(scale_im) / 255.0, mean=PIXEL_MEANS, std=PIXEL_STDS)
         crop_ims = []
         if args.crop_type == 'center':  # for single crop
-            crop_ims.append(T.center_crop(scale_im, crop_size=args.crop_size))
+            crop_ims.append(T.center_crop(normalized_im, crop_size=args.crop_size))
         elif args.crop_type == 'multi':  # for 10 crops
-            crop_ims.extend(T.mirror_crop(scale_im, crop_size=args.crop_size))
+            crop_ims.extend(T.mirror_crop(normalized_im, crop_size=args.crop_size))
         else:
-            crop_ims.append(scale_im)
+            crop_ims.append(normalized_im)
 
         score_vec = np.zeros(args.class_num, dtype=np.float32)
         iter_num = int(len(crop_ims) / args.batch_size)
