@@ -48,7 +48,7 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
 ### ImageNet
 Single-crop (224x224) validation error rate is reported. 
 
-| Model                       | Flops (M) | Params (M) | Top-1 Error (%) | Top-5 Error (%)  |
+| Network                     | Flops (M) | Params (M) | Top-1 Error (%) | Top-5 Error (%)  |
 | :-------------------------: | --------- |----------- | --------------- | ---------------- |
 | air50-1x64d                 | 6148.2    | 35.9       | 21.02           | 5.55             |
 | air101-1x64d                | 11722.9   | 64.4       | 20.13           | 5.02             |
