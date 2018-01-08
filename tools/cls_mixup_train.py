@@ -22,7 +22,6 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
 import models.imagenet as customized_models
-from PIL import Image, ImageOps
 
 try:
     import accimage
@@ -33,21 +32,18 @@ import numpy as np
 from tools import draw_curve
 from config import cfg, cfg_from_file, cfg_from_list
 from utils import Logger, AverageMeter, measure_model, accuracy, mkdir_p, savefig, mixup_data, mixup_criterion, \
-    weight_filler
+    weight_filler, RandomPixelJitter
 
 # Models
 default_model_names = sorted(name for name in models.__dict__
                              if name.islower() and not name.startswith("__")
                              and callable(models.__dict__[name]))
-
 customized_models_names = sorted(name for name in customized_models.__dict__
                                  if name.islower() and not name.startswith("__")
                                  and callable(customized_models.__dict__[name]))
-
 for name in customized_models.__dict__:
     if name.islower() and not name.startswith("__") and callable(customized_models.__dict__[name]):
         models.__dict__[name] = customized_models.__dict__[name]
-
 model_names = default_model_names + customized_models_names
 print(model_names)
 
@@ -59,11 +55,9 @@ parser.add_argument('--cfg', dest='cfg_file',
 parser.add_argument('--set', dest='set_cfgs',
                     help='set config keys', default=None,
                     nargs=argparse.REMAINDER)
-
 args = parser.parse_args()
 print('==> Called with args:')
 print(args)
-
 if args.cfg_file is not None:
     cfg_from_file(args.cfg_file)
 if args.set_cfgs is not None:
@@ -87,33 +81,13 @@ BEST_ACC = 0  # best test accuracy
 LR_STATE = cfg.CLS.base_lr
 
 
-class RandomRotate(object):
-    def __init__(self, range):
-        self.range = range
-        assert len(range) == 2
-
-    def __call__(self, im):
-        angle = np.random.randint(self.range[0], self.range[1], 1)
-        return im.rotate(angle)
-
-
-class RandomJitter(object):
-    def __init__(self, range):
-        self.range = range
-        assert len(range) == 2
-
-    def __call__(self, im):
-        pic = np.array(im)
-        noise = np.random.randint(self.range[0], self.range[1], pic.shape[-1])
-        pic = pic + noise
-        pic = pic.astype(np.uint8)
-        return Image.fromarray(pic)
-
-
 def mixup_train(loader, model, criterion, optimizer, epoch, use_cuda):
     global BEST_ACC, LR_STATE
     # switch to train mode
-    model.train()
+    if not cfg.CLS.fix_bn:
+        model.train()
+    else:
+        model.eval()
 
     batch_time = AverageMeter()
     data_time = AverageMeter()
@@ -123,22 +97,23 @@ def mixup_train(loader, model, criterion, optimizer, epoch, use_cuda):
     end = time.time()
 
     for batch_idx, (inputs, targets) in enumerate(loader):
+        # adjust learning rate
+        adjust_learning_rate(optimizer, epoch, batch=batch_idx, batch_per_epoch=len(loader))
+
         # mixup
         inputs, targets_a, targets_b, lam = mixup_data(inputs, targets, ALPHA)
         if use_cuda:
             inputs, targets_a, targets_b = inputs.cuda(), targets_a.cuda(), targets_b.cuda()
-        optimizer.zero_grad()
         inputs, targets_a, targets_b = torch.autograd.Variable(inputs), torch.autograd.Variable(targets_a), \
                                        torch.autograd.Variable(targets_b)
-
-        # adjust learning rate
-        adjust_learning_rate(optimizer, epoch, batch=batch_idx, batch_per_epoch=len(loader))
 
         # measure data loading time
         data_time.update(time.time() - end)
 
-        # forward pass
+        # forward pass: compute output
         outputs = model(inputs)
+        # forward pass: compute gradient and do SGD step
+        optimizer.zero_grad()
         loss_func = mixup_criterion(targets_a, targets_b, lam)
         loss = loss_func(criterion, outputs)
         # backward
@@ -239,7 +214,7 @@ def adjust_learning_rate(optimizer, epoch, batch=0, batch_per_epoch=5000):
             else:
                 param_group['lr'] = LR_STATE
     else:
-        if epoch in cfg.CLS.schedule:
+        if epoch in cfg.CLS.lr_schedule and batch == 0:
             LR_STATE *= cfg.CLS.gamma
             for param_group in optimizer.param_groups:
                 cur_lr = param_group['lr']
@@ -262,16 +237,19 @@ def main():
 
     # Dataset and Loader
     normalize = transforms.Normalize(mean=cfg.pixel_mean, std=cfg.pixel_std)
+    train_aug = [transforms.RandomResizedCrop(cfg.CLS.crop_size), transforms.RandomHorizontalFlip()]
+    if len(cfg.CLS.rotation) > 0:
+        train_aug.append(transforms.RandomRotation(cfg.CLS.rotation))
+    if len(cfg.CLS.pixel_jitter) > 0:
+        train_aug.append(RandomPixelJitter(cfg.CLS.pixel_jitter))
+    if cfg.CLS.grayscale > 0:
+        train_aug.append(transforms.RandomGrayscale(cfg.CLS.grayscale))
+    train_aug.append(transforms.ToTensor())
+    train_aug.append(normalize)
+
     traindir = os.path.join(cfg.CLS.data_root, cfg.CLS.train_folder)
     train_loader = torch.utils.data.DataLoader(
-        datasets.ImageFolder(traindir, transforms.Compose([
-            transforms.RandomResizedCrop(cfg.CLS.crop_size),
-            transforms.RandomHorizontalFlip(),
-            # RandomJitter([-20, 20]),
-            # RandomRotate([-10, 10]),
-            transforms.ToTensor(),
-            normalize,
-        ])),
+        datasets.ImageFolder(traindir, transforms.Compose(train_aug)),
         batch_size=cfg.CLS.train_batch, shuffle=True,
         num_workers=cfg.workers, pin_memory=True)
 
