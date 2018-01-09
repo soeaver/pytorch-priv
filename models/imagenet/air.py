@@ -11,7 +11,7 @@ from torch.nn import init
 import torch
 
 __all__ = ['air', 'air14', 'air26', 'air50', 'air101', 'air152', 'air26_1x32d', 'air50_1x32d', 
-           'air26_1x16d', 'air50_1x16d', 'air50_1x64d']
+           'air26_1x16d', 'air50_1x16d', 'air50_1x32d', 'air50_1x64d']
 
 
 class AIRBottleneck(nn.Module):
@@ -227,6 +227,12 @@ def air26_1x16d():
 def air50_1x16d():
     model = AIR(baseWidth=16, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
     return model
+
+
+def air50_1x32d():
+    model = AIR(baseWidth=32, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
+    return model
+
 
 def air50_1x64d():
     model = AIR(baseWidth=64, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
