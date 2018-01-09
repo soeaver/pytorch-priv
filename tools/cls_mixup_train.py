@@ -4,8 +4,15 @@ Copyright (c) Yang Lu, 2017
 """
 from __future__ import print_function
 
-import argparse
+import inspect
 import os
+import sys
+
+this_file = inspect.getfile(inspect.currentframe())
+file_pth = os.path.abspath(os.path.dirname(this_file))
+sys.path.append(file_pth + '/../')  # path of pytorch-priv
+
+import argparse
 import shutil
 import pprint
 import time
@@ -18,6 +25,7 @@ import torch.nn.parallel
 import torch.backends.cudnn as cudnn
 import torch.optim as optim
 import torch.utils.data as data
+from torch.autograd import Variable
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
@@ -100,12 +108,12 @@ def mixup_train(loader, model, criterion, optimizer, epoch, use_cuda):
         # adjust learning rate
         adjust_learning_rate(optimizer, epoch, batch=batch_idx, batch_per_epoch=len(loader))
 
-        # mixup
-        inputs, targets_a, targets_b, lam = mixup_data(inputs, targets, ALPHA)
         if use_cuda:
-            inputs, targets_a, targets_b = inputs.cuda(), targets_a.cuda(), targets_b.cuda()
-        inputs, targets_a, targets_b = torch.autograd.Variable(inputs), torch.autograd.Variable(targets_a), \
-                                       torch.autograd.Variable(targets_b)
+            inputs, targets = inputs.cuda(), targets.cuda()
+        # mixup
+        inputs, targets_a, targets_b, lam = mixup_data(inputs, targets, ALPHA, use_cuda)
+        optimizer.zero_grad()
+        inputs, targets_a, targets_b = Variable(inputs), Variable(targets_a), Variable(targets_b)
 
         # measure data loading time
         data_time.update(time.time() - end)
@@ -113,7 +121,6 @@ def mixup_train(loader, model, criterion, optimizer, epoch, use_cuda):
         # forward pass: compute output
         outputs = model(inputs)
         # forward pass: compute gradient and do SGD step
-        optimizer.zero_grad()
         loss_func = mixup_criterion(targets_a, targets_b, lam)
         loss = loss_func(criterion, outputs)
         # backward
