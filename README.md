@@ -59,8 +59,8 @@ Single-crop (224x224) validation error rate is reported.
 - Speed test on Single Titan xp with batch-size=1.
 
 <div align='center'>
-  <img src='data/images/air50_1x64d_curve.png' height='330px'>
-  <img src='data/images/air101_1x64d_curve.png' height='330px'>
+  <img src='utils/data/images/air50_1x64d_curve.png' height='330px'>
+  <img src='utils/data/images/air101_1x64d_curve.png' height='330px'>
 </div> 
 
 
