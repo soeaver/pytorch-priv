@@ -40,7 +40,7 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
 ## Features
 - [x] [Aligned Inception ResNet (AIR)](https://arxiv.org/abs/1703.06211)
 - [x] [Cosine Learning Rate](https://arxiv.org/pdf/1707.06990.pdf) 
-- [x] [Mixup](https://arxiv.org/pdf/1710.09412.pdf) (progressing...)
+- [x] [Mixup](https://arxiv.org/pdf/1710.09412.pdf)
 
 
 ## Results
@@ -48,13 +48,15 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
 ### ImageNet
 Single-crop (224x224) validation error rate is reported. 
 
-| Network                     | Flops (M) | Params (M) | Top-1 Error (%) | Top-5 Error (%)  |
-| :-------------------------: | --------- |----------- | --------------- | ---------------- |
-| resnet50-1x64d              | 4109.4    | 25.5       | 22.96           | 6.54             |
-| air50-1x32d                 | 1543.9    | 9.5        | 24.99           | 7.62             |
-| air50-1x64d                 | 6148.2    | 35.9       | 21.02           | 5.55             |
-| air50-1x80d                 | 9597.9    | 55.4       | -----           | ----             |
-| air101-1x64d                | 11722.9   | 64.4       | 20.13           | 5.02             |
+| Network                 | Flops (M) | Params (M) | Top-1 Error (%) | Top-5 Error (%) | Speed (im/sec) |
+| :---------------------: | --------- |----------- | --------------- | --------------- | -------------- |
+| resnet50-1x64d          | 4109.4    | 25.5       | 22.96           | 6.54            | 160.1          |
+| air50-1x32d             | 1543.9    | 9.5        | 24.99           | 7.62            | 91.7           |
+| air50-1x64d             | 6148.2    | 35.9       | 21.02           | 5.55            | 86.9           |
+| air50-1x80d             | 9597.9    | 55.4       | 20.50           | 5.41            | 81.3           |
+| air101-1x64d            | 11722.9   | 64.4       | 20.13           | 5.02            | 48.1           |
+
+- Speed test on Single Titan xp with batch-size=1.
 
 <div align='center'>
   <img src='data/images/air50_1x64d_curve.png' height='330px'>
