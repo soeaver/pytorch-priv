@@ -8,6 +8,7 @@ import os
 import sys
 import time
 import math
+import random
 import numpy as np
 from PIL import Image
 
