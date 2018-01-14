@@ -36,48 +36,36 @@ class RandomPixelJitter(object):
     
     
 class RandomErasing(object):
-    '''
-    Class that performs Random Erasing in Random Erasing Data Augmentation by Zhong et al. 
-    -------------------------------------------------------------------------------------
-    probability: The probability that the operation will be performed.
-    sl: min erasing area
-    sh: max erasing area
-    r1: min aspect ratio
-    mean: erasing value
-    -------------------------------------------------------------------------------------
-    '''
     def __init__(self, probability=0.5, sl=0.02, sh=0.4, r1=0.3, mean=(0.4914, 0.4822, 0.4465)):
         self.probability = probability
-        self.mean = mean
-        self.sl = sl
-        self.sh = sh
-        self.r1 = r1
-       
-    def __call__(self, img):
+        self.mean = mean    # erasing mean value
+        self.sl = sl    # min erasing area
+        self.sh = sh    # max erasing area
+        self.r1 = r1    # min aspect ratio
+
+    def __call__(self, im):
         if random.uniform(0, 1) > self.probability:
-            return img
+            return im
 
-        for attempt in xrange(100):
-            area = img.size()[1] * img.size()[2]
-       
-            target_area = random.uniform(self.sl, self.sh) * area
-            aspect_ratio = random.uniform(self.r1, 1/self.r1)
+        pic = np.array(im)
+        h, w = pic.shape[:2]
+        target_area = random.uniform(self.sl, self.sh) * (h * w)
+        aspect_ratio = random.uniform(self.r1, 1 / self.r1)
 
-            h = int(round(math.sqrt(target_area * aspect_ratio)))
-            w = int(round(math.sqrt(target_area / aspect_ratio)))
+        xx = min(int(round(math.sqrt(target_area * aspect_ratio))), w - 2)
+        yy = min(int(round(math.sqrt(target_area / aspect_ratio))), h - 2)
+        x1 = random.randint(0, w - xx)
+        y1 = random.randint(0, h - yy)
 
-            if w < img.size()[2] and h < img.size()[1]:
-                x1 = random.randint(0, img.size()[1] - h)
-                y1 = random.randint(0, img.size()[2] - w)
-                if img.size()[0] == 3:
-                    img[0, x1:x1+h, y1:y1+w] = self.mean[0]
-                    img[1, x1:x1+h, y1:y1+w] = self.mean[1]
-                    img[2, x1:x1+h, y1:y1+w] = self.mean[2]
-                else:
-                    img[0, x1:x1+h, y1:y1+w] = self.mean[0]
-                return img
+        if len(pic.shape) == 3:
+            pic[y1:y1 + yy, x1:x1 + xx, 0] = self.mean[0]
+            pic[y1:y1 + yy, x1:x1 + xx, 1] = self.mean[1]
+            pic[y1:y1 + yy, x1:x1 + xx, 2] = self.mean[2]
+        else:
+            pic[y1:y1 + yy, x1:x1 + xx] = self.mean[0]
 
-        return img
+        pic = pic.astype(np.uint8)
+        return Image.fromarray(pic)
 
 
 def mixup_data(x, y, alpha=1.0, use_cuda=True):
