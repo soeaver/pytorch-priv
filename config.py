@@ -48,6 +48,7 @@ __C.CLS.crop_size = 224  # crop size
 __C.CLS.rotation = []  # list, randomly rotate the image by angle, etc. [-10, 10]
 __C.CLS.pixel_jitter = []  # list, random pixel jitter, etc. [-20, 20]
 __C.CLS.grayscale = 0  # float, randomly convert image to gray-scale with a probability, etc. 0.1
+__C.CLS.random_erasing = False  # using random erasing data augmentation
 __C.CLS.disp_iter = 20  # display iteration
 __C.CLS.ckpt = 'ckpts/imagenet/resnet18/'  # path to save checkpoint
 __C.CLS.resume = ''  # path to latest checkpoint
