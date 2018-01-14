@@ -19,7 +19,7 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
 **For training:**
 1. Modify the `.yml` file in `./cfg/cls/air50-1x64d`:
    * the `ckpt` is used to save the checkpoints
-   * if you want use cosine learning rate, please set `cosine_lr: True`, then `lr_schedule` and `gamma` will not be used
+   * if you want use cosine learning rate, please set `cosine_lr: True`, then `lr_schedule` and `gamma` will not be used
    * for resuming training, add the `model.pth.tar` to `resume: ` and modify `start_epoch`
    * `rotation`, `pixel_jitter` and `grayscale` are extra data augmentation, recommended for training complex networks only
 2. Train a network:
