@@ -29,17 +29,15 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
      python cls_train.py --cfg ./cfg/imagenet/air50_1x64d.yml 
      ```
      
-3. Option (training with [mixup](https://arxiv.org/pdf/1710.09412.pdf)):
-     
+*3. Option (training with [mixup](https://arxiv.org/pdf/1710.09412.pdf)): 
      ```
      python tools/cls_mixup_train.py --cfg ./cfg/imagenet/air50_1x64d_mixup.yml 
      ```
    for better performace:
-     * the `ckpt` is used to save the checkpoints
-     * the `ckpt` is used to save the checkpoints
+     * double the epochs for training with mixup
+     * a few extra epochs with no mixup after the process above 
     
-  
-4. Option (training cifar dataset):
+*4. Option (training cifar dataset):
      ```
      python tools/cls_cifar.py --cfg ./cfg/cifar10/resnext29_8x64d.yml
      ```
