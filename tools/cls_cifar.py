@@ -37,7 +37,8 @@ import numpy as np
 
 from tools import draw_curve
 from config import cfg, cfg_from_file, cfg_from_list
-from utils import Logger, AverageMeter, measure_model, accuracy, mkdir_p, savefig, weight_filler, RandomPixelJitter
+from utils import Logger, AverageMeter, measure_model, accuracy, mkdir_p, savefig, weight_filler, RandomPixelJitter, \
+    RandomErasing
 
 # Models
 model_names = sorted(name for name in models.__dict__
@@ -247,6 +248,8 @@ def main():
         train_aug.append(RandomPixelJitter(cfg.CLS.pixel_jitter))
     if cfg.CLS.grayscale > 0:
         train_aug.append(transforms.RandomGrayscale(cfg.CLS.grayscale))
+    if cfg.CLS.random_erasing:
+        train_aug.append(RandomErasing(probability=0.5, sl=0.02, sh=0.4, r1=0.3, mean=cfg.pixel_mean))
     train_aug.append(transforms.ToTensor())
     train_aug.append(normalize)
 
