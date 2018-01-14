@@ -1,0 +1,32 @@
+workers: 32
+pixel_mean: [0.4914, 0.4822, 0.4465]
+pixel_std: [0.2023, 0.1994, 0.2010]
+gpu_ids: '0'
+
+CLS:
+  arch: 'resnext29_8x64d_c10'
+  data_root: '/home/user/Database/cifar'
+  epochs: 300
+  train_batch: 64
+  test_batch: 200
+  base_lr: 0.1
+  lr_schedule: [150, 225]
+  gamma: 0.1
+  momentum: 0.9
+  weight_decay: 0.0005
+  fix_bn: False
+  num_classes: 10
+  base_size: 40
+  crop_size: 32
+  rotation: []
+  pixel_jitter: []
+  grayscale: 0
+  disp_iter: 20
+  ckpt: 'ckpts/cifar10/resnext29_8x64d_mixup'
+  resume: ''
+  start_epoch: 0
+  pretrained: ''
+  cosine_lr: False
+  validate: True
+  evaluate: False
+

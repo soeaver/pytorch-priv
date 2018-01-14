@@ -1,14 +1,14 @@
 workers: 16
 pixel_mean: [0.485, 0.456, 0.406]
 pixel_std: [0.229, 0.224, 0.225]
-gpu_ids: '1,2,3,4,5,6,7'
+gpu_ids: '0,1,2,3,4,5,6,7'
 
 CLS:
-  arch: 'densenet121_g8i2'
+  arch: 'air50_1x64d'
   data_root: '/home/user/Database/ILSVRC2017/Data/CLS-LOC/'
   train_folder: 'train'
   val_folder: 'val'
-  epochs: 110
+  epochs: 100
   train_batch: 256
   test_batch: 200
   base_lr: 0.1
@@ -16,14 +16,19 @@ CLS:
   gamma: 0.1
   momentum: 0.9
   weight_decay: 0.0001
+  fix_bn: False
   num_classes: 1000
   base_size: 256
   crop_size: 224
-  ckpt: 'ckpts/imagenet/densenet121_g8i2/'
-  resume: 'ckpts/imagenet/densenet121_g8i2/model_best.pth.tar'
-  start_epoch: 100
+  rotation: []
+  pixel_jitter: []
+  grayscale: 0
+  disp_iter: 20
+  ckpt: 'ckpts/imagenet/air50_1x64d'
+  resume: ''
+  start_epoch: 0
   pretrained: ''
   cosine_lr: True
   validate: True
   evaluate: False
-  mixup: False
+
