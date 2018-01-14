@@ -49,15 +49,16 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
 ### Cifar10 & Cifar100
 Single-crop (224x224) validation error rate is reported. 
 
-| Network                 | Flops (M) | Params (M) | Cifar10 Top-1 </rb>Error (%) | Cifar100 Top-1 Error (%) |
-| :---------------------: | --------- |----------- | --------------- | --------------- |
-| resnet50-1x64d          | 4109.4    | 25.5       | 22.96           | 6.54            |
-| air50-1x32d             | 1543.9    | 9.5        | 24.99           | 7.62            |
-| air50-1x64d             | 6148.2    | 35.9       | 21.02           | 5.55            |
-| air50-1x80d             | 9597.9    | 55.4       | 20.50           | 5.41            |
-| air101-1x64d            | 11722.9   | 64.4       | 20.13           | 5.02            |
+| Network                  | Flops (M) | Params (M) | Cifar10 Top-1<br/>Error (%) | Cifar100 Top-1<br/>Error (%) |
+| :----------------------: | --------- |----------- | --------------------------- | ---------------------------- |
+| resnext29-8x64d          | 4109.4    | 25.5       | 3.73                        | --                           |
+| resnext29-8x64d-mixup    | 4109.4    | 25.5       | 2.90                        | --                           |
+| resnext29-8x64d-ea       | 4109.4    | 25.5       | --                          | --                           |
+| resnext29-8x64d-mixup-ea | 4109.4    | 25.5       | --                          | --                           |
+
 
 - Speed test on Single Titan xp with batch-size=1.
+
 
 ### ImageNet1k
 Single-crop (224x224) validation error rate is reported. 
