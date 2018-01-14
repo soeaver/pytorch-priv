@@ -46,20 +46,6 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
 
 ## Results
 
-### Cifar10 & Cifar100
-Single-crop (224x224) validation error rate is reported. 
-
-| Network                  | Flops (M) | Params (M) | Cifar10 Top-1<br/>Error (%) | Cifar100 Top-1<br/>Error (%) |
-| :----------------------: | --------- |----------- | --------------------------- | ---------------------------- |
-| resnext29-8x64d          | 4109.4    | 25.5       | 3.73                        | --                           |
-| resnext29-8x64d-mixup    | 4109.4    | 25.5       | 2.90                        | --                           |
-| resnext29-8x64d-ea       | 4109.4    | 25.5       | --                          | --                           |
-| resnext29-8x64d-mixup-ea | 4109.4    | 25.5       | --                          | --                           |
-
-
-- Speed test on Single Titan xp with batch-size=1.
-
-
 ### ImageNet1k
 Single-crop (224x224) validation error rate is reported. 
 
@@ -77,6 +63,17 @@ Single-crop (224x224) validation error rate is reported.
   <img src='utils/data/images/air50_1x64d_curve.png' height='330px'>
   <img src='utils/data/images/air101_1x64d_curve.png' height='330px'>
 </div> 
+
+
+### Cifar10 & Cifar100
+Single-crop (224x224) validation error rate is reported. 
+
+| Network                  | Flops (M) | Params (M) | Cifar10 Top-1<br/>Error (%) | Cifar100 Top-1<br/>Error (%) |
+| :----------------------: | --------- |----------- | --------------------------- | ---------------------------- |
+| resnext29-8x64d          | 4109.4    | 25.5       | 3.73                        | --                           |
+| resnext29-8x64d-mixup    | 4109.4    | 25.5       | 2.90                        | --                           |
+| resnext29-8x64d-ea       | 4109.4    | 25.5       | --                          | --                           |
+| resnext29-8x64d-mixup-ea | 4109.4    | 25.5       | --                          | --                           |
 
 
 ## License
