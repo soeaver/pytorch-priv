@@ -16,8 +16,9 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
 
 
 ## Training and Evaluating
+
 **For training:**
-1. Modify the `.yml` file in `./cfg/cls/air50-1x64d`:
+1. Modify the `.yml` file in `./cfg/imagenet/air50-1x64d`:
    * the `ckpt` is used to save the checkpoints
    * if you want use cosine learning rate, please set `cosine_lr: True`, then `lr_schedule` and `gamma` will not be used
    * for resuming training, add the `model.pth.tar` to `resume: ` and modify `start_epoch`
@@ -25,7 +26,26 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
    
 2. Train a network:
      ```
-     python train_cls.py --cfg ./cfg/cls/air101-1x64d/air50_1x64d_imagenet.yml 
+     python cls_train.py --cfg ./cfg/imagenet/air50_1x64d.yml 
+     ```
+     
+3. Option (training with [mixup](https://arxiv.org/pdf/1710.09412.pdf)):
+     
+     ```
+     python tools/cls_mixup_train.py --cfg ./cfg/imagenet/air50_1x64d_mixup.yml 
+     ```
+   for better performace:
+     * the `ckpt` is used to save the checkpoints
+     * the `ckpt` is used to save the checkpoints
+    
+  
+4. Option (training cifar dataset):
+     ```
+     python tools/cls_cifar.py --cfg ./cfg/cifar10/resnext29_8x64d.yml
+     ```
+     or with mixup:
+     ```
+     python tools/cls_mixup_cifar.py --cfg ./cfg/cifar10/resnext29_8x64d_mixup.yml
      ```
 
 **For evaluating:**
@@ -36,6 +56,14 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
 2. Evaluate a network:
      ```
      python train_cls.py --cfg ./cfg/cls/air101-1x64d/air50_1x64d_imagenet.yml 
+     ```
+     
+**For evaluating image by image:**
+1. Modify the `tools/cls_eval.py` file
+   
+2. Evaluate a network:
+     ```
+     python tools/cls_eval.py
      ```
 
 
