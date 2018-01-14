@@ -1,19 +1,19 @@
-workers: 32
+workers: 16
 pixel_mean: [0.4914, 0.4822, 0.4465]
 pixel_std: [0.2023, 0.1994, 0.2010]
-gpu_ids: '0'
+gpu_ids: '0,1,2,3'
 
 CLS:
   arch: 'resnext29_8x64d_c10'
   data_root: '/home/user/Database/cifar'
   epochs: 300
-  train_batch: 64
+  train_batch: 256
   test_batch: 200
   base_lr: 0.1
   lr_schedule: [150, 225]
   gamma: 0.1
   momentum: 0.9
-  weight_decay: 0.0005
+  weight_decay: 0.0001
   fix_bn: False
   num_classes: 10
   base_size: 40
