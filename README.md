@@ -29,7 +29,7 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
      python cls_train.py --cfg ./cfg/imagenet/air50_1x64d.yml 
      ```
      
-    2.1 Training with [mixup](https://arxiv.org/pdf/1710.09412.pdf)(option):
+    2.1 Training with [mixup](https://arxiv.org/pdf/1710.09412.pdf) (option):
      ```
      python tools/cls_mixup_train.py --cfg ./cfg/imagenet/air50_1x64d_mixup.yml 
      ```
@@ -37,11 +37,11 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
      * double the epochs for training with mixup 
      * a few extra epochs with no mixup after the process above
 
-    2.2 Ttraining cifar dataset(option):
+    2.2 Ttraining cifar dataset (option):
      ```
      python tools/cls_cifar.py --cfg ./cfg/cifar10/resnext29_8x64d.yml
      ```
-     or with mixup:
+     or with mixup (usually `weight_decay: 0.0001`):
      ```
      python tools/cls_mixup_cifar.py --cfg ./cfg/cifar10/resnext29_8x64d_mixup.yml
      ```
@@ -53,7 +53,7 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
    
 2. Evaluate a network:
      ```
-     python train_cls.py --cfg ./cfg/cls/air101-1x64d/air50_1x64d_imagenet.yml 
+     python train_cls.py --cfg ./cfg/imagenet/  air50_1x64d.yml 
      ```
      
 **For evaluating image by image:**
@@ -85,7 +85,7 @@ Single-crop (224x224) validation error rate is reported.
 | air50-1x80d             | 9597.9    | 55.4       | 20.50           | 5.41            | 81.3           |
 | air101-1x64d            | 11722.9   | 64.4       | 20.13           | 5.02            | 48.1           |
 
-- Speed test on Single Titan xp with batch-size=1.
+- Speed test on single Titan xp GPU with `batch_size: 1`.
 
 <div align='center'>
   <img src='utils/data/images/air50_1x64d_curve.png' height='330px'>
