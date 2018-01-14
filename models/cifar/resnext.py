@@ -1,16 +1,19 @@
 from __future__ import division
-""" 
+
+"""
 Creates a ResNeXt Model as defined in:
-Xie, S., Girshick, R., Dollar, P., Tu, Z., & He, K. (2016). 
-Aggregated residual transformations for deep neural networks. 
+Saining Xie, Ross Girshick, Piotr Dollar, Zhuowen Tu, Kaiming He. (2016).
+Aggregated residual transformations for deep neural networks.
 arXiv preprint arXiv:1611.05431.
 import from https://github.com/prlz77/ResNeXt.pytorch/blob/master/models/model.py
+Copyright (c) Yang Lu, 2017
 """
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn import init
 
-__all__ = ['resnext']
+__all__ = ['resnext29_8x64d_c10', 'resnext29_8x64d_c100', 'resnext29_16x64d_c10', 'resnext29_16x64d_c100']
+
 
 class ResNeXtBottleneck(nn.Module):
     """
@@ -36,7 +39,8 @@ class ResNeXtBottleneck(nn.Module):
 
         self.shortcut = nn.Sequential()
         if in_channels != out_channels:
-            self.shortcut.add_module('shortcut_conv', nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=stride, padding=0, bias=False))
+            self.shortcut.add_module('shortcut_conv', nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=stride, 
+                                                                padding=0, bias=False))
             self.shortcut.add_module('shortcut_bn', nn.BatchNorm2d(out_channels))
 
     def forward(self, x):
@@ -55,7 +59,7 @@ class CifarResNeXt(nn.Module):
     ResNext optimized for the Cifar dataset, as specified in
     https://arxiv.org/pdf/1611.05431.pdf
     """
-    def __init__(self, cardinality, depth, num_classes, widen_factor=4, dropRate=0):
+    def __init__(self, cardinality=8, depth=29, widen_factor=4, num_classes=10):
         """ Constructor
         Args:
             cardinality: number of convolution groups.
@@ -72,13 +76,13 @@ class CifarResNeXt(nn.Module):
         self.output_size = 64
         self.stages = [64, 64 * self.widen_factor, 128 * self.widen_factor, 256 * self.widen_factor]
 
-        self.conv_1_3x3 = nn.Conv2d(3, 64, 3, 1, 1, bias=False)
-        self.bn_1 = nn.BatchNorm2d(64)
+        self.conv1 = nn.Conv2d(3, 64, 3, 1, 1, bias=False)
+        self.bn1 = nn.BatchNorm2d(64)
         self.stage_1 = self.block('stage_1', self.stages[0], self.stages[1], 1)
         self.stage_2 = self.block('stage_2', self.stages[1], self.stages[2], 2)
         self.stage_3 = self.block('stage_3', self.stages[2], self.stages[3], 2)
-        self.classifier = nn.Linear(1024, num_classes)
-        init.kaiming_normal(self.classifier.weight)
+        self.avgpool = nn.AdaptiveAvgPool2d(1)
+        self.fc = nn.Linear(self.stages[3], num_classes)
 
         for key in self.state_dict():
             if key.split('.')[-1] == 'weight':
@@ -88,6 +92,7 @@ class CifarResNeXt(nn.Module):
                     self.state_dict()[key][...] = 1
             elif key.split('.')[-1] == 'bias':
                 self.state_dict()[key][...] = 0
+        init.kaiming_normal(self.fc.weight)
 
     def block(self, name, in_channels, out_channels, pool_stride=2):
         """ Stack n bottleneck modules where n is inferred from the depth of the network.
@@ -110,17 +115,33 @@ class CifarResNeXt(nn.Module):
         return block
 
     def forward(self, x):
-        x = self.conv_1_3x3.forward(x)
-        x = F.relu(self.bn_1.forward(x), inplace=True)
+        x = self.conv1.forward(x)
+        x = F.relu(self.bn1.forward(x), inplace=True)
         x = self.stage_1.forward(x)
         x = self.stage_2.forward(x)
         x = self.stage_3.forward(x)
-        x = F.avg_pool2d(x, 8, 1)
-        x = x.view(-1, 1024)
-        return self.classifier(x)
+        x = self.avgpool(x)
+        x = x.view(x.size(0), -1)
+        x = self.fc(x)
 
-def resnext(**kwargs):
-    """Constructs a ResNeXt.
-    """
-    model = CifarResNeXt(**kwargs)
+        return x
+
+
+def resnext29_8x64d_c10():
+    model = CifarResNeXt(cardinality=8, depth=29, widen_factor=4, num_classes=10)
+    return model
+
+
+def resnext29_8x64d_c100():
+    model = CifarResNeXt(cardinality=8, depth=29, widen_factor=4, num_classes=100)
+    return model
+
+
+def resnext29_16x64d_c10():
+    model = CifarResNeXt(cardinality=16, depth=29, widen_factor=4, num_classes=10)
+    return model
+
+
+def resnext29_16x64d_c100():
+    model = CifarResNeXt(cardinality=16, depth=29, widen_factor=4, num_classes=100)
     return model
