@@ -66,7 +66,7 @@ Single-crop (224x224) validation error rate is reported.
 
 
 ### Cifar10 & Cifar100
-Single-crop (224x224) validation error rate is reported. 
+Single-crop (32x32) validation error rate is reported. 
 
 | Network                  | Flops (M) | Params (M) | Cifar10 Top-1<br/>Error (%) | Cifar100 Top-1<br/>Error (%) |
 | :----------------------: | --------- |----------- | --------------------------- | ---------------------------- |
