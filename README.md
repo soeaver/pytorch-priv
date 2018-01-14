@@ -29,7 +29,7 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
      python cls_train.py --cfg ./cfg/imagenet/air50_1x64d.yml 
      ```
      
-2.1. Option (training with [mixup](https://arxiv.org/pdf/1710.09412.pdf)): 
+3. Option (training with [mixup](https://arxiv.org/pdf/1710.09412.pdf)): 
      ```
      python tools/cls_mixup_train.py --cfg ./cfg/imagenet/air50_1x64d_mixup.yml 
      ```
