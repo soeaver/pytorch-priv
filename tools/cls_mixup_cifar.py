@@ -25,6 +25,7 @@ import torch.nn.parallel
 import torch.backends.cudnn as cudnn
 import torch.optim as optim
 import torch.utils.data as data
+from torch.autograd import Variable
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import models.cifar as models
