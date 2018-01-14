@@ -38,14 +38,28 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
 
 
 ## Features
-- [x] [Aligned Inception ResNet (AIR)](https://arxiv.org/abs/1703.06211)
+- [x] [Aligned Inception ResNet (air)](https://arxiv.org/abs/1703.06211)
 - [x] [Cosine Learning Rate](https://arxiv.org/pdf/1707.06990.pdf) 
 - [x] [Mixup](https://arxiv.org/pdf/1710.09412.pdf)
+- [x] [Random-Erasing](https://arxiv.org/pdf/1708.04896.pdf)
 
 
 ## Results
 
-### ImageNet
+### Cifar10 & Cifar100
+Single-crop (224x224) validation error rate is reported. 
+
+| Network                 | Flops (M) | Params (M) | Cifar10 Top-1 </rb>Error (%) | Cifar100 Top-1 Error (%) |
+| :---------------------: | --------- |----------- | --------------- | --------------- |
+| resnet50-1x64d          | 4109.4    | 25.5       | 22.96           | 6.54            |
+| air50-1x32d             | 1543.9    | 9.5        | 24.99           | 7.62            |
+| air50-1x64d             | 6148.2    | 35.9       | 21.02           | 5.55            |
+| air50-1x80d             | 9597.9    | 55.4       | 20.50           | 5.41            |
+| air101-1x64d            | 11722.9   | 64.4       | 20.13           | 5.02            |
+
+- Speed test on Single Titan xp with batch-size=1.
+
+### ImageNet1k
 Single-crop (224x224) validation error rate is reported. 
 
 | Network                 | Flops (M) | Params (M) | Top-1 Error (%) | Top-5 Error (%) | Speed (im/sec) |
