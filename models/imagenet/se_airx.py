@@ -10,8 +10,7 @@ import torch.nn.functional as F
 from torch.nn import init
 import torch
 
-__all__ = ['se_airx', 'se_airx26_32x4d', 'se_airx50_32x4d', 'se_airx101_32x4d', 'se_airx152_32x4d',
-           'se_airx26_128x1d', 'se_airx50_128x1d', 'se_airx26_256x1d']
+__all__ = ['se_airx50_32x4d']
 
 
 class SEAIRXBottleneck(nn.Module):
@@ -127,7 +126,7 @@ class SE_AIRX(nn.Module):
             self.conv3 = nn.Conv2d(32, 64, 3, 1, 1, bias=False)
             self.bn3 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
-        self.maxpool1 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
         self.layer1 = self._make_layer(block, 64, layers[0])
         self.layer2 = self._make_layer(block, 128, layers[1], 2)
@@ -187,7 +186,7 @@ class SE_AIRX(nn.Module):
             x = self.conv3(x)
             x = self.bn3(x)
             x = self.relu(x)
-        x = self.maxpool1(x)
+        x = self.maxpool(x)
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
@@ -212,36 +211,6 @@ def se_airx(baseWidth=64, head7x7=True, layers=(3, 4, 23, 3), num_classes=1000):
     return model
 
 
-def se_airx26_32x4d():
-    model = SE_AIRX(baseWidth=4, cardinality=32, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
 def se_airx50_32x4d():
     model = SE_AIRX(baseWidth=4, cardinality=32, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
-    return model
-
-
-def se_airx101_32x4d():
-    model = SE_AIRX(baseWidth=4, cardinality=32, head7x7=False, layers=(3, 4, 23, 3), num_classes=1000)
-    return model
-
-
-def se_airx152_32x4d():
-    model = SE_AIRX(baseWidth=4, cardinality=32, head7x7=False, layers=(3, 8, 36, 3), num_classes=1000)
-    return model
-
-
-def se_airx26_128x1d():
-    model = SE_AIRX(baseWidth=1, cardinality=128, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def se_airx50_128x1d():
-    model = SE_AIRX(baseWidth=1, cardinality=128, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
-    return model
-
-
-def se_airx26_256x1d():
-    model = SE_AIRX(baseWidth=1, cardinality=256, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
     return model
