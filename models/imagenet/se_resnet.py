@@ -15,9 +15,7 @@ import torch.nn.functional as F
 from torch.nn import init
 import torch
 
-__all__ = ['se_resnet', 'se_resnet10', 'se_resnet18', 'se_resnet34', 'se_resnet50', 'se_resnet101', 
-           'se_resnet152', 'se_resnet18_1x64d', 'se_resnet18_1x48d', 'se_resnet18_1x32d', 
-           'se_resnet50_1x64d']
+__all__ = ['se_resnet18_1x64d', 'se_resnet50_1x64d', 'se_resnet101_1x64d']
 
 
 def conv3x3(in_planes, out_planes, stride=1):
@@ -154,7 +152,7 @@ class SE_ResNet(nn.Module):
             self.conv3 = nn.Conv2d(baseWidth // 2, baseWidth, 3, 1, 1, bias=False)
             self.bn3 = nn.BatchNorm2d(baseWidth)
         self.relu = nn.ReLU(inplace=True)
-        self.maxpool1 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
         self.layer1 = self._make_layer(block, baseWidth, layers[0])
         self.layer2 = self._make_layer(block, baseWidth * 2, layers[1], 2)
@@ -217,7 +215,7 @@ class SE_ResNet(nn.Module):
             x = self.conv3(x)
             x = self.bn3(x)
             x = self.relu(x)
-        x = self.maxpool1(x)
+        x = self.maxpool(x)
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
@@ -245,51 +243,16 @@ def se_resnet(bottleneck=True, baseWidth=64, head7x7=True, layers=(3, 4, 23, 3),
     return model
 
 
-def se_resnet10():
-    model = SE_ResNet(bottleneck=False, baseWidth=64, head7x7=True, layers=(1, 1, 1, 1), num_classes=1000)
-    return model
-
-
-def se_resnet18():
-    model = SE_ResNet(bottleneck=False, baseWidth=64, head7x7=True, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def se_resnet34():
-    model = SE_ResNet(bottleneck=False, baseWidth=64, head7x7=True, layers=(3, 4, 6, 3), num_classes=1000)
-    return model
-
-
-def se_resnet50():
-    model = SE_ResNet(bottleneck=True, baseWidth=64, head7x7=True, layers=(3, 4, 6, 3), num_classes=1000)
-    return model
-
-
-def se_resnet101():
-    model = SE_ResNet(bottleneck=True, baseWidth=64, head7x7=True, layers=(3, 4, 23, 3), num_classes=1000)
-    return model
-
-
-def se_resnet152():
-    model = SE_ResNet(bottleneck=True, baseWidth=64, head7x7=True, layers=(3, 8, 36, 3), num_classes=1000)
-    return model
-
-
 def se_resnet18_1x64d():
     model = SE_ResNet(bottleneck=False, baseWidth=64, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
     return model
 
 
-def se_resnet18_1x48d():
-    model = SE_ResNet(bottleneck=False, baseWidth=48, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def se_resnet18_1x32d():
-    model = SE_ResNet(bottleneck=False, baseWidth=32, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
 def se_resnet50_1x64d():
+    model = SE_ResNet(bottleneck=False, baseWidth=64, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
+    return model
+
+
+def se_resnet101_1x64d():
     model = SE_ResNet(bottleneck=False, baseWidth=64, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
     return model
