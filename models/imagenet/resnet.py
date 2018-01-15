@@ -14,10 +14,8 @@ import torch.nn.functional as F
 from torch.nn import init
 import torch
 
-__all__ = ['resnet', 'resnet10', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152',
-           'resnet10_1x32d_c79077', 'resnet18_1x32d_c79077', 'resnet18_1x32d_c8631', 'resnet10_1x48d',
-           'resnet18_1x48d', 'resnet10_1x32d', 'resnet18_1x32d', 'resnet10_1x16d', 'resnet18_1x16d',
-           'resnet10_1x96d', 'resnet18_1x96d', 'resnet18_1x128d', 'resnet50_place365', 'resnet50_1x64d']
+__all__ = ['resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'resnet10_1x64d',
+           'resnet18_1x64d', 'resnet50_1x64d', 'resnet101_1x64d']
 
 
 def conv3x3(in_planes, out_planes, stride=1):
@@ -205,11 +203,6 @@ def resnet(bottleneck=False, baseWidth=32, head7x7=False, layers=(2, 2, 2, 2), n
     return model
 
 
-def resnet10():
-    model = ResNet(bottleneck=False, baseWidth=64, head7x7=True, layers=(1, 1, 1, 1), num_classes=1000)
-    return model
-
-
 def resnet18():
     model = ResNet(bottleneck=False, baseWidth=64, head7x7=True, layers=(2, 2, 2, 2), num_classes=1000)
     return model
@@ -235,77 +228,21 @@ def resnet152():
     return model
 
 
-def resnet10_1x32d_c79077():
-    model = ResNet(bottleneck=False, baseWidth=32, head7x7=False, layers=(1, 1, 1, 1), num_classes=79077)
+def resnet10_1x64d():
+    model = ResNet(bottleneck=False, baseWidth=64, head7x7=False, layers=(1, 1, 1, 1), num_classes=1000)
     return model
 
 
-def resnet18_1x32d_c79077():
-    model = ResNet(bottleneck=False, baseWidth=32, head7x7=False, layers=(2, 2, 2, 2), num_classes=79077)
-    return model
-
-
-def resnet18_1x32d_c8631():
-    model = ResNet(bottleneck=False, baseWidth=32, head7x7=False, layers=(2, 2, 2, 2), num_classes=8631)
-    return model
-
-
-def resnet10_1x48d():
-    model = ResNet(bottleneck=False, baseWidth=48, head7x7=False, layers=(1, 1, 1, 1), num_classes=1000)
-    return model
-
-
-def resnet18_1x48d():
-    model = ResNet(bottleneck=False, baseWidth=48, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def resnet10_1x32d():
-    model = ResNet(bottleneck=False, baseWidth=32, head7x7=False, layers=(1, 1, 1, 1), num_classes=1000)
-    return model
-
-
-def resnet18_1x32d():
-    model = ResNet(bottleneck=False, baseWidth=32, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def resnet10_1x16d():
-    model = ResNet(bottleneck=False, baseWidth=16, head7x7=False, layers=(1, 1, 1, 1), num_classes=1000)
-    return model
-
-
-def resnet18_1x16d():
-    model = ResNet(bottleneck=False, baseWidth=16, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def resnet10_1x96d():
-    model = ResNet(bottleneck=False, baseWidth=96, head7x7=False, layers=(1, 1, 1, 1), num_classes=1000)
-    return model
-
-
-def resnet18_1x96d():
-    model = ResNet(bottleneck=False, baseWidth=96, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def resnet18_1x128d():
-    model = ResNet(bottleneck=False, baseWidth=128, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def resnet50_place365():
-    model = ResNet(bottleneck=True, baseWidth=64, head7x7=False, layers=(3, 4, 6, 3), num_classes=365)
-    model.conv1 = conv3x3(3, 64, stride=2)
-    model.bn1 = nn.BatchNorm2d(64)
-    model.conv2 = conv3x3(64, 64)
-    model.bn2 = nn.BatchNorm2d(64)
-    model.conv3 = conv3x3(64, 64)
-    model.bn3 = nn.BatchNorm2d(64)
+def resnet18_1x64d():
+    model = ResNet(bottleneck=False, baseWidth=64, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
     return model
 
 
 def resnet50_1x64d():
     model = ResNet(bottleneck=True, baseWidth=64, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
+    return model
+
+
+def resnet101_1x64d():
+    model = ResNet(bottleneck=True, baseWidth=64, head7x7=False, layers=(3, 4, 23, 3), num_classes=1000)
     return model
