@@ -14,8 +14,8 @@ import torch.nn.functional as F
 from torch.nn import init
 import torch
 
-__all__ = ['resnext', 'resnext26_32x4d', 'resnext50_32x4d', 'resnext101_32x4d', 'resnext101_64x4d',
-           'resnext152_32x4d', 'resnext152_32x8d', 'resnext26_128x1d']
+__all__ = ['resnext26_32x4d', 'resnext50_32x4d', 'resnext101_32x4d', 'resnext101_64x4d', 'resnext101_32x8d',
+           'resnext152_32x4d', 'resnext152_32x8d']
 
 
 class Bottleneck(nn.Module):
@@ -188,35 +188,36 @@ def resnext(baseWidth=4, cardinality=32, head7x7=True, layers=(3, 4, 23, 3), num
 
 
 def resnext26_32x4d():
-    model = ResNeXt(baseWidth=4, cardinality=32, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
+    model = ResNeXt(baseWidth=4, cardinality=32, head7x7=True, layers=(2, 2, 2, 2), num_classes=1000)
     return model
 
 
 def resnext50_32x4d():
-    model = ResNeXt(baseWidth=4, cardinality=32, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
+    model = ResNeXt(baseWidth=4, cardinality=32, head7x7=True, layers=(3, 4, 6, 3), num_classes=1000)
     return model
 
 
 def resnext101_32x4d():
-    model = ResNeXt(baseWidth=4, cardinality=32, head7x7=False, layers=(3, 4, 23, 3), num_classes=1000)
+    model = ResNeXt(baseWidth=4, cardinality=32, head7x7=True, layers=(3, 4, 23, 3), num_classes=1000)
     return model
 
 
 def resnext101_64x4d():
-    model = ResNeXt(baseWidth=4, cardinality=32, head7x7=False, layers=(3, 4, 23, 3), num_classes=1000)
+    model = ResNeXt(baseWidth=4, cardinality=64, head7x7=True, layers=(3, 4, 23, 3), num_classes=1000)
+    return model
+
+
+def resnext101_32x8d():
+    model = ResNeXt(baseWidth=8, cardinality=32, head7x7=True, layers=(3, 4, 23, 3), num_classes=1000)
     return model
 
 
 def resnext152_32x4d():
-    model = ResNeXt(baseWidth=4, cardinality=32, head7x7=False, layers=(3, 8, 36, 3), num_classes=1000)
+    model = ResNeXt(baseWidth=4, cardinality=32, head7x7=True, layers=(3, 8, 36, 3), num_classes=1000)
     return model
 
 
 def resnext152_32x8d():
-    model = ResNeXt(baseWidth=4, cardinality=32, head7x7=False, layers=(3, 8, 36, 3), num_classes=1000)
+    model = ResNeXt(baseWidth=8, cardinality=32, head7x7=True, layers=(3, 8, 36, 3), num_classes=1000)
     return model
 
-
-def resnext26_128x1d():
-    model = ResNeXt(baseWidth=1, cardinality=128, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
