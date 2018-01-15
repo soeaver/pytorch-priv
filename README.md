@@ -98,7 +98,7 @@ Single-crop (32x32) validation error rate is reported.
 
 | Network                  | Flops (M) | Params (M) | Cifar10 Top-1<br/>Error (%) | Cifar100 Top-1<br/>Error (%) |
 | :----------------------: | --------- |----------- | --------------------------- | ---------------------------- |
-| resnext29-8x64d          | 5387.2    | 34.4       | 3.73                        | --                           |
+| resnext29-8x64d          | 5387.2    | 34.4       | 3.73                        | 18.55                        |
 | resnext29-8x64d-mixup    | 5387.2    | 34.4       | 2.90                        | --                           |
 | resnext29-8x64d-ea       | 5387.2    | 34.4       | 3.55                        | --                           |
 
