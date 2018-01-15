@@ -13,7 +13,7 @@ import torch.nn.functional as F
 from torch.nn import init
 import numpy as np
 
-__all__ = ['shufflenet', 'shufflenet_w2g3', 'shufflenet_w2g3', 'shufflenet_w2g3', 'shufflenet_w2g3']
+__all__ = ['shufflenet', 'shufflenet_w2g3', 'shufflenet_w15g3', 'shufflenet_w1g3', 'shufflenet_w05g8']
 
 
 def channel_shuffle(x, groups):
@@ -142,7 +142,7 @@ class ShuffleNet(nn.Module):
         self.conv1 = nn.Conv2d(3, self.inplanes, 3, 2, 1, bias=False)
         self.bn1 = nn.BatchNorm2d(self.inplanes)
         self.relu = nn.ReLU(inplace=True)
-        self.maxpool1 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.stage2 = self._make_layer(stage_out_channels[0], layers[0], first_group=False)
         self.stage3 = self._make_layer(stage_out_channels[1], layers[1])
         self.stage4 = self._make_layer(stage_out_channels[2], layers[2])
@@ -176,7 +176,7 @@ class ShuffleNet(nn.Module):
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
-        x = self.maxpool1(x)
+        x = self.maxpool(x)
         x = self.stage2(x)
         x = self.stage3(x)
         x = self.stage4(x)
