@@ -10,8 +10,7 @@ import torch.nn.functional as F
 from torch.nn import init
 import torch
 
-__all__ = ['air', 'air14', 'air26', 'air50', 'air101', 'air152', 'air26_1x32d', 
-           'air26_1x16d', 'air50_1x16d', 'air50_1x32d', 'air50_1x64d']
+__all__ = ['air14_1x64d', 'air26_1x64d', 'air50_1x64d', 'air101_1x64d', 'air152_1x64d']
 
 
 class AIRBottleneck(nn.Module):
@@ -171,7 +170,7 @@ class AIR(nn.Module):
         return x
 
 
-def air(baseWidth=64, head7x7=True, layers=(3, 4, 23, 3), num_classes=1000):
+def air(baseWidth=64, head7x7=False, layers=(3, 4, 23, 3), num_classes=1000):
     """
     Construct AIR.
     (2, 2, 2, 2) for air26
@@ -184,48 +183,13 @@ def air(baseWidth=64, head7x7=True, layers=(3, 4, 23, 3), num_classes=1000):
     return model
 
 
-def air14():
-    model = AIR(baseWidth=64, head7x7=True, layers=(1, 1, 1, 1), num_classes=1000)
+def air14_1x64d():
+    model = AIR(baseWidth=64, head7x7=False, layers=(1, 1, 1, 1), num_classes=1000)
     return model
 
 
-def air26():
-    model = AIR(baseWidth=64, head7x7=True, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def air50():
-    model = AIR(baseWidth=64, head7x7=True, layers=(3, 4, 6, 3), num_classes=1000)
-    return model
-
-
-def air101():
-    model = AIR(baseWidth=64, head7x7=True, layers=(3, 4, 23, 3), num_classes=1000)
-    return model
-
-
-def air152():
-    model = AIR(baseWidth=64, head7x7=True, layers=(3, 8, 36, 3), num_classes=1000)
-    return model
-
-
-def air26_1x16d():
-    model = AIR(baseWidth=16, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def air26_1x32d():
-    model = AIR(baseWidth=32, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def air50_1x16d():
-    model = AIR(baseWidth=16, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
-    return model
-
-
-def air50_1x32d():
-    model = AIR(baseWidth=32, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
+def air26_1x64d():
+    model = AIR(baseWidth=64, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
     return model
 
 
@@ -233,3 +197,12 @@ def air50_1x64d():
     model = AIR(baseWidth=64, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
     return model
 
+
+def air101_1x64d():
+    model = AIR(baseWidth=64, head7x7=False, layers=(3, 4, 23, 3), num_classes=1000)
+    return model
+
+
+def air152_1x64d():
+    model = AIR(baseWidth=64, head7x7=False, layers=(3, 8, 36, 3), num_classes=1000)
+    return model
