@@ -10,8 +10,7 @@ import torch.nn.functional as F
 from torch.nn import init
 import torch
 
-__all__ = ['se_air', 'se_air14', 'se_air26', 'se_air50', 'se_air101', 'se_air152',  
-           'se_air26_1x32d', 'se_air50_1x32d', 'se_air26_1x16d', 'se_air50_1x16d']
+__all__ = ['se_air50_1x64d']
 
 
 class SEAIRBottleneck(nn.Module):
@@ -118,7 +117,7 @@ class SE_AIR(nn.Module):
             self.conv3 = nn.Conv2d(baseWidth // 2, baseWidth, 3, 1, 1, bias=False)
             self.bn3 = nn.BatchNorm2d(baseWidth)
         self.relu = nn.ReLU(inplace=True)
-        self.maxpool1 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
         self.layer1 = self._make_layer(block, baseWidth, layers[0])
         self.layer2 = self._make_layer(block, baseWidth * 2, layers[1], 2)
@@ -178,7 +177,7 @@ class SE_AIR(nn.Module):
             x = self.conv3(x)
             x = self.bn3(x)
             x = self.relu(x)
-        x = self.maxpool1(x)
+        x = self.maxpool(x)
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
@@ -204,46 +203,6 @@ def se_air(baseWidth=64, head7x7=True, layers=(3, 4, 23, 3), num_classes=1000):
     return model
 
 
-def se_air14():
-    model = SE_AIR(baseWidth=64, head7x7=False, layers=(1, 1, 1, 1), num_classes=1000)
-    return model
-
-
-def se_air26():
-    model = SE_AIR(baseWidth=64, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def se_air50():
-    model = SE_AIR(baseWidth=64, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
-    return model
-
-
-def se_air101():
-    model = SE_AIR(baseWidth=64, head7x7=False, layers=(3, 4, 23, 3), num_classes=1000)
-    return model
-
-
-def se_air152():
-    model = SE_AIR(baseWidth=64, head7x7=False, layers=(3, 8, 36, 3), num_classes=1000)
-    return model
-
-
-def se_air26_1x32d():
-    model = SE_AIR(baseWidth=32, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def se_air50_1x32d():
-    model = SE_AIR(baseWidth=32, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
-    return model
-
-
-def se_air26_1x16d():
-    model = SE_AIR(baseWidth=16, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
 def se_air50_1x16d():
-    model = SE_AIR(baseWidth=16, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
+    model = SE_AIR(baseWidth=64, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
     return model
