@@ -10,8 +10,7 @@ import torch.nn.functional as F
 from torch.nn import init
 import torch
 
-__all__ = ['airx', 'airx26_32x4d', 'airx50_32x4d', 'airx101_32x4d', 'airx152_32x4d',
-           'airx26_128x1d', 'airx50_128x1d', 'airx26_256x1d']
+__all__ = ['airx26_32x4d', 'airx50_32x4d', 'airx101_32x4d']
 
 
 class AIRXBottleneck(nn.Module):
@@ -31,23 +30,24 @@ class AIRXBottleneck(nn.Module):
         """
         super(AIRXBottleneck, self).__init__()
 
-        D = int(math.floor(planes * (baseWidth / 64.0)))	# when placne=64, C=32, baseWidth=4, then D=4
+        D = int(math.floor(planes * (baseWidth / 64.0)))  # when planes=64, C=32, baseWidth=4, then D=4
         C = cardinality
 
-        self.conv1_1 = nn.Conv2d(inplanes, D*C, kernel_size=1, stride=1, padding=0, bias=False)
-        self.bn1_1 = nn.BatchNorm2d(D*C)
-        self.conv1_2 = nn.Conv2d(D*C, D*C, kernel_size=3, stride=stride, padding=1, groups=C, bias=False)
+        self.conv1_1 = nn.Conv2d(inplanes, D * C, kernel_size=1, stride=1, padding=0, bias=False)
+        self.bn1_1 = nn.BatchNorm2d(D * C)
+        self.conv1_2 = nn.Conv2d(D * C, D * C, kernel_size=3, stride=stride, padding=1, groups=C, bias=False)
 
-        self.conv2_1 = nn.Conv2d(inplanes, D*C//2, kernel_size=1, stride=1, padding=0, bias=False)
-        self.bn2_1 = nn.BatchNorm2d(D*C//2)
-        self.conv2_2 = nn.Conv2d(D*C//2, D*C//2, kernel_size=3, stride=stride, padding=1, groups=C//2, bias=False)
-        self.bn2_2 = nn.BatchNorm2d(D*C//2)
-        self.conv2_3 = nn.Conv2d(D*C//2, D*C//2, kernel_size=3, stride=1, padding=1, groups=C//2, bias=False)
+        self.conv2_1 = nn.Conv2d(inplanes, D * C // 2, kernel_size=1, stride=1, padding=0, bias=False)
+        self.bn2_1 = nn.BatchNorm2d(D * C // 2)
+        self.conv2_2 = nn.Conv2d(D * C // 2, D * C // 2, kernel_size=3, stride=stride, padding=1, groups=C // 2,
+                                 bias=False)
+        self.bn2_2 = nn.BatchNorm2d(D * C // 2)
+        self.conv2_3 = nn.Conv2d(D * C // 2, D * C // 2, kernel_size=3, stride=1, padding=1, groups=C // 2, bias=False)
 
-        self.bn_concat = nn.BatchNorm2d(D*C + D*C//2)
+        self.bn_concat = nn.BatchNorm2d(D * C + D * C // 2)
 
-        self.conv = nn.Conv2d(D*C + D*C//2, planes*4, kernel_size=1, stride=1, padding=0, bias=False)
-        self.bn = nn.BatchNorm2d(planes*4)
+        self.conv = nn.Conv2d(D * C + D * C // 2, planes * 4, kernel_size=1, stride=1, padding=0, bias=False)
+        self.bn = nn.BatchNorm2d(planes * 4)
 
         self.relu = nn.ReLU(inplace=True)
 
@@ -72,7 +72,7 @@ class AIRXBottleneck(nn.Module):
         out = torch.cat((branch1, branch2), 1)
         out = self.bn_concat(out)
         out = self.relu(out)
-  
+
         out = self.conv(out)
         out = self.bn(out)
 
@@ -113,13 +113,13 @@ class AIRX(nn.Module):
             self.conv3 = nn.Conv2d(32, 64, 3, 1, 1, bias=False)
             self.bn3 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
-        self.maxpool1 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
         self.layer1 = self._make_layer(block, 64, layers[0])
         self.layer2 = self._make_layer(block, 128, layers[1], 2)
         self.layer3 = self._make_layer(block, 256, layers[2], 2)
         self.layer4 = self._make_layer(block, 512, layers[3], 2)
-        self.avgpool = nn.AdaptiveAvgPool2d(1)    
+        self.avgpool = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Linear(512 * block.expansion, num_classes)
 
         for m in self.modules():
@@ -170,6 +170,7 @@ class AIRX(nn.Module):
             x = self.conv3(x)
             x = self.bn3(x)
             x = self.relu(x)
+        x = self.maxpool(x)
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
@@ -190,8 +191,8 @@ def airx(baseWidth=4, cardinality=32, head7x7=True, layers=(3, 4, 23, 3), num_cl
     (3, 8, 36, 3) for airx152
     note: The actual depth of airx is not the same as its name.
     """
-    model = AIRX(baseWidth=baseWidth, cardinality=cardinality, head7x7=head7x7, layers=layers, 
-    	num_classes=num_classes)
+    model = AIRX(baseWidth=baseWidth, cardinality=cardinality, head7x7=head7x7, layers=layers,
+                 num_classes=num_classes)
     return model
 
 
@@ -208,24 +209,3 @@ def airx50_32x4d():
 def airx101_32x4d():
     model = AIRX(baseWidth=4, cardinality=32, head7x7=False, layers=(3, 4, 23, 3), num_classes=1000)
     return model
-
-
-def airx152_32x4d():
-    model = AIRX(baseWidth=4, cardinality=32, head7x7=False, layers=(3, 8, 36, 3), num_classes=1000)
-    return model
-
-
-def airx26_128x1d():
-    model = AIRX(baseWidth=1, cardinality=128, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
-
-def airx50_128x1d():
-    model = AIRX(baseWidth=1, cardinality=128, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
-    return model
-
-
-def airx26_256x1d():
-    model = AIRX(baseWidth=1, cardinality=256, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000)
-    return model
-
