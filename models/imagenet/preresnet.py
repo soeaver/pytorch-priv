@@ -14,7 +14,7 @@ import torch.nn.functional as F
 from torch.nn import init
 import torch
 
-__all__ = ['preresnet', 'preresnet50', 'preresnet101', 'preresnet152', 'preresnet200']
+__all__ = ['preresnet50', 'preresnet101', 'preresnet152', 'preresnet200', 'preresnet269']
 
 
 def conv3x3(in_planes, out_planes, stride=1):
@@ -223,4 +223,9 @@ def preresnet152():
 
 def preresnet200():
     model = PreResNet(bottleneck=True, baseWidth=64, head7x7=True, layers=(3, 24, 36, 3), num_classes=1000)
+    return model
+
+
+def preresnet269():
+    model = PreResNet(bottleneck=True, baseWidth=64, head7x7=True, layers=(3, 30, 48, 8), num_classes=1000)
     return model
