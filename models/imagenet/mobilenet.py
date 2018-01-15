@@ -12,15 +12,16 @@ import torch.nn.functional as F
 from torch.nn import init
 import torch
 
-__all__ = ['mobilenet', 'mobilenet_2', 'mobilenet_1', 'mobilenet_075', 'mobilenet_05', 'mobilenet_025',
-          'mobilenet_1prelu']
+__all__ = ['mobilenet_2', 'mobilenet_1', 'mobilenet_075', 'mobilenet_05', 'mobilenet_025',
+           'mobilenet_1prelu']
 
 
 class DepthWiseBlock(nn.Module):
     def __init__(self, inplanes, planes, stride=1, prelu=False):
         super(DepthWiseBlock, self).__init__()
         inplanes, planes = int(inplanes), int(planes)
-        self.conv_dw = nn.Conv2d(inplanes, inplanes, kernel_size=3, padding=1, stride=stride, groups=inplanes, bias=False)
+        self.conv_dw = nn.Conv2d(inplanes, inplanes, kernel_size=3, padding=1, stride=stride, groups=inplanes,
+                                 bias=False)
         self.bn_dw = nn.BatchNorm2d(inplanes)
         self.conv_sep = nn.Conv2d(inplanes, planes, kernel_size=1, stride=1, padding=0, bias=False)
         self.bn_sep = nn.BatchNorm2d(planes)
@@ -77,7 +78,7 @@ class MobileNet(nn.Module):
 
         self.dw6 = block(1024 * widen_factor, 1024 * widen_factor, prelu=prelu)
 
-        self.avgpool = nn.AdaptiveAvgPool2d(1)  
+        self.avgpool = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Linear(int(1024 * widen_factor), num_classes)
 
         for m in self.modules():
@@ -117,6 +118,10 @@ class MobileNet(nn.Module):
 def mobilenet(widen_factor=1.0, num_classes=1000):
     """
     Construct MobileNet.
+    widen_factor=1.0  for mobilenet_1
+    widen_factor=0.75 for mobilenet_075
+    widen_factor=0.5  for mobilenet_05
+    widen_factor=0.25 for mobilenet_025
     """
     model = MobileNet(widen_factor=widen_factor, num_classes=num_classes)
     return model
@@ -160,6 +165,7 @@ def mobilenet_025():
     """
     model = MobileNet(widen_factor=0.25, num_classes=1000)
     return model
+
 
 def mobilenet_1prelu():
     """
