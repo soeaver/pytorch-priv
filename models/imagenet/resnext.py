@@ -104,7 +104,7 @@ class ResNeXt(nn.Module):
             self.conv3 = nn.Conv2d(32, 64, 3, 1, 1, bias=False)
             self.bn3 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
-        self.maxpool1 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
         self.layer1 = self._make_layer(block, 64, layers[0])
         self.layer2 = self._make_layer(block, 128, layers[1], 2)
@@ -161,7 +161,7 @@ class ResNeXt(nn.Module):
             x = self.conv3(x)
             x = self.bn3(x)
             x = self.relu(x)
-        x = self.maxpool1(x)
+        x = self.maxpool(x)
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
