@@ -188,7 +188,7 @@ class ResNet(nn.Module):
         return x
 
 
-def resnet(bottleneck=False, baseWidth=32, head7x7=False, layers=(2, 2, 2, 2), num_classes=1000):
+def resnet(bottleneck=True, baseWidth=64, head7x7=True, layers=(3, 4, 23, 3), num_classes=1000):
     """
     Construct ResNet.
     (2, 2, 2, 2) for resnet18	# bottleneck=False
