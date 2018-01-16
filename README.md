@@ -47,13 +47,13 @@ Pytorch implementation for Classification, Semantic Segmentation, Pose Estimatio
      ```
 
 **For evaluating:**
-1. Modify the `.yml` file in `./cfg/cls/air50-1x64d`:
+1. Modify the `.yml` file in `./cfg/imagenet/air50-1x64d`:
    * add the `model.pth.tar` to `pretrained: `
    * set the `evaluate: True`
    
 2. Evaluate a network:
      ```
-     python train_cls.py --cfg ./cfg/imagenet/  air50_1x64d.yml 
+     python train_cls.py --cfg ./cfg/imagenet/air50_1x64d.yml 
      ```
      
 **For evaluating image by image:**
@@ -94,7 +94,7 @@ Single-crop (224x224) validation error rate is reported.
 
 
 ### Cifar10 & Cifar100
-Single-crop (32x32) validation error rate is reported. 
+Validation error rate is reported. 
 
 | Network                  | Flops (M) | Params (M) | Cifar10 Top-1<br/>Error (%) | Cifar100 Top-1<br/>Error (%) |
 | :----------------------: | --------- |----------- | --------------------------- | ---------------------------- |
