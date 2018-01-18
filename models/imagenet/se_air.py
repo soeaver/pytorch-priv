@@ -203,6 +203,6 @@ def se_air(baseWidth=64, head7x7=True, layers=(3, 4, 23, 3), num_classes=1000):
     return model
 
 
-def se_air50_1x16d():
+def se_air50_1x64d():
     model = SE_AIR(baseWidth=64, head7x7=False, layers=(3, 4, 6, 3), num_classes=1000)
     return model
