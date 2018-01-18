@@ -127,8 +127,7 @@ def train(loader, model, criterion, optimizer, epoch, use_cuda):
             print('Training: [{}/{}][{}/{}] | Best_Acc: {:4.2f}% | Time: {:.2f} | Data: {:.2f} | '
                   'LR: {:.8f} | Top1: {:.4f}% | Top5: {:.4f}% | Loss: {:.4f} | Total: {:.2f}'
                   .format(epoch + 1, cfg.CLS.epochs, batch_idx + 1, len(loader), BEST_ACC, batch_time.average(),
-                          data_time.average(), LR_STATE, top1.avg, top5.avg, losses.avg,
-                          batch_time.sum + data_time.sum))
+                          data_time.average(), LR_STATE, top1.avg, top5.avg, losses.avg, batch_time.sum))
 
     return (losses.avg, top1.avg)
 
@@ -171,8 +170,8 @@ def test(val_loader, model, criterion, epoch, use_cuda):
         print('Testing: [{}/{}][{}/{}] | Best_Acc: {:4.2f}% | Time: {:.2f} | Data: {:.2f} | '
               'LR: {:.8f} | Top1: {:.4f}% | Top5: {:.4f}% | Loss: {:.4f} | Total: {:.2f}'
               .format(epoch + 1, cfg.CLS.epochs, batch_idx + 1, len(val_loader), BEST_ACC,
-                      batch_time.average(), data_time.average(),
-                      LR_STATE, top1.avg, top5.avg, losses.avg, batch_time.sum + data_time.sum))
+                      batch_time.average(), data_time.average(), LR_STATE, top1.avg, top5.avg, 
+                      losses.avg, batch_time.sum))
 
     return (losses.avg, top1.avg, top5.avg)
 
