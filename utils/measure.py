@@ -50,7 +50,7 @@ def measure_layer(layer, x):
         delta_params = get_layer_param(layer)
 
     ### ops_nonlinearity
-    elif type_name in ['ReLU', 'Sigmoid', 'PReLU']:
+    elif type_name in ['ReLU', 'Sigmoid', 'PReLU', 'ReLU6']:
         delta_ops = x.numel()
         delta_params = get_layer_param(layer)
 
