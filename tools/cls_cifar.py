@@ -50,7 +50,7 @@ print(model_names)
 parser = argparse.ArgumentParser(description='PyTorch Model Training')
 parser.add_argument('--cfg', dest='cfg_file',
                     help='optional config file',
-                    default='./cfgs/cls/resnet18_1x64d_imagenet.yml', type=str)
+                    default='./cfgs/cifar10/resnext29_8x64d_mixup.yml', type=str)
 parser.add_argument('--set', dest='set_cfgs',
                     help='set config keys', default=None,
                     nargs=argparse.REMAINDER)
