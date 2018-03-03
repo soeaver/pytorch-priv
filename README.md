@@ -89,11 +89,6 @@ Single-crop (224x224) validation error rate is reported.
 
 - Speed test on single Titan xp GPU with `batch_size: 1`.
 
-<div align='center'>
-  <img src='utils/data/images/air50_1x64d_curve.png' height='330px'>
-  <img src='utils/data/images/air101_1x64d_curve.png' height='330px'>
-</div> 
-
 
 ### Cifar10 & Cifar100
 Validation error rate is reported. 
