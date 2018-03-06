@@ -79,8 +79,8 @@ Single-crop (224x224) validation error rate is reported.
 
 | Network                 | Flops (M) | Params (M) | Top-1 Error (%) | Top-5 Error (%) | Speed (im/sec) |
 | :---------------------: | --------- |----------- | --------------- | --------------- | -------------- |
-| resnet50-1x64d          | 4342.1    | 25.5       | 22.58           | 6.25            | 157.1          |
-| resnet101-1x64d         | 8039.0    | 44.5       | 21.00           | 5.52            | 91.7           |
+| resnet50-1x64d          | 4342.1    | 25.5       | 23.52           | 7.01            | 157.1          |
+| resnet101-1x64d         | 8039.0    | 44.5       | 22.18           | 6.23            | 91.7           |
 
 
 - Speed test on single Titan xp GPU with `batch_size: 1`.
