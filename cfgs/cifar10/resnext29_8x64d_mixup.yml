@@ -27,6 +27,5 @@ CLS:
   resume: ''
   start_epoch: 0
   pretrained: ''
-  cosine_lr: False
   validate: True
   evaluate: False
