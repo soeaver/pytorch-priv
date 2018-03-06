@@ -12,7 +12,7 @@ CLS:
   train_batch: 256
   test_batch: 200
   base_lr: 0.1
-  lr_schedule: [30, 60]
+  lr_schedule: [30, 60, 90]
   gamma: 0.1
   momentum: 0.9
   weight_decay: 0.0001
@@ -28,7 +28,6 @@ CLS:
   resume: ''
   start_epoch: 0
   pretrained: ''
-  cosine_lr: True
   validate: True
   evaluate: False
 
