@@ -54,7 +54,7 @@ __C.CLS.ckpt = 'ckpts/imagenet/resnet18/'  # path to save checkpoint
 __C.CLS.resume = ''  # path to latest checkpoint
 __C.CLS.start_epoch = 0  # manual epoch number (useful on resume)
 __C.CLS.pretrained = ''  # path to pretrained model
-__C.CLS.cosine_lr = True  # using cosine learning rate
+__C.CLS.cosine_lr = False  # using cosine learning rate
 __C.CLS.validate = True  # validate
 __C.CLS.evaluate = False  # evaluate
 
