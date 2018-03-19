@@ -178,6 +178,9 @@ def test(val_loader, model, criterion, epoch, use_cuda):
 
 def save_checkpoint(model, optimizer, cur_acc, epoch):
     global BEST_ACC
+    if cur_acc >= BEST_ACC:
+        # update BEST_ACC
+        BEST_ACC = cur_acc
     print('==> Saving checkpoints...')
     suffix_latest = 'latest.pth.tar'
     suffix_best = 'best.pth.tar'
@@ -187,9 +190,7 @@ def save_checkpoint(model, optimizer, cur_acc, epoch):
 
     torch.save(state, '{}/model_{}'.format(cfg.CLS.ckpt, suffix_latest))
 
-    if cur_acc > BEST_ACC:
-        # update BEST_ACC
-        BEST_ACC = cur_acc
+    if cur_acc >= BEST_ACC:
         shutil.copyfile('{}/model_{}'.format(cfg.CLS.ckpt, suffix_latest),
                         '{}/model_{}'.format(cfg.CLS.ckpt, suffix_best))
 
